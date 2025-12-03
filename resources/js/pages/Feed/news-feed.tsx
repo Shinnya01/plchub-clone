@@ -24,6 +24,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useInitials } from "@/hooks/use-initials";
+import InputError from "@/components/input-error";
 
 export default function Newsfeed({posts}: {posts: Post[]}) {
   const breadcrumb: BreadcrumbItem[] = [
@@ -43,6 +44,7 @@ export default function Newsfeed({posts}: {posts: Post[]}) {
     submit('/news-feed');
   }
 
+  const getInitials = useInitials();
   return (
     <AppLayout breadcrumbs={breadcrumb}>
       <Head title="News Feed" />
@@ -66,6 +68,7 @@ export default function Newsfeed({posts}: {posts: Post[]}) {
                         onChange={(e) => setData("description", e.target.value)}
                         className="border-none bg-none" 
                         placeholder="What's on your mind?"/>
+                    <InputError message={errors.description} />
                 </div>
                 <div className="m-2">
                   {data.image && (
@@ -92,9 +95,10 @@ export default function Newsfeed({posts}: {posts: Post[]}) {
                       }}
                     />
                   </label>
+                  <InputError message={errors.image} />
                 </div>
                 <DialogFooter className="p-2">
-                    <Button type="submit" className="w-full">Post</Button>
+                    <Button type="submit" className="w-full" disabled={processing}>Post</Button>
                 </DialogFooter>
               </form>
             </DialogContent>
@@ -103,8 +107,9 @@ export default function Newsfeed({posts}: {posts: Post[]}) {
         {posts.length <= 0 && (
             <p className="text-center text-sm text-muted-foreground">No Posts Yet.</p>
         )}
+        
         {posts.map((post) => {
-          const getInitials = useInitials();
+          
           return (
           <Card key={post.id} className="pb-2 gap-2">
             

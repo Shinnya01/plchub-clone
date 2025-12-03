@@ -32,7 +32,7 @@ export default function ViewUser({user}: {user: User}){
         },
     ]
 
-    const {data, processing, errors} = useForm({
+    const {data, errors} = useForm({
             name: user.name,
             email: user.email,
             role: user.role,
