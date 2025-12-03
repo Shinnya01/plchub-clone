@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { useState } from "react"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -49,14 +48,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { PlaceholderPattern } from "./placeholder-pattern"
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar"
 import { useInitials } from "@/hooks/use-initials"
 
 
 export function UserDataTable({users}: {users: User[]}) {
-  const [openDelete, setDeleteOpen] = useState(false)
-
+  const getInitials = useInitials();
   const columns: ColumnDef<User>[] = [
   {
     id: "select",
@@ -84,7 +81,7 @@ export function UserDataTable({users}: {users: User[]}) {
     accessorKey: "name",
     header: () => <div className="">Name</div>,
     cell: ({ row }) => {
-      const getInitials = useInitials();
+      
       const user = row.original;
       return (
         <div className="font-medium flex items-center gap-2">
@@ -126,7 +123,6 @@ export function UserDataTable({users}: {users: User[]}) {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original
 
       return (
         <DropdownMenu>

@@ -25,7 +25,7 @@ export default function EditUser({user}: {user: User}){
         role: user.role,
     })
 
-    const handleUpdate = (e: any) => {
+    const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         put(`/user-management/${user.id}`)
     }

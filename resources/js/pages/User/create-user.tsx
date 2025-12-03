@@ -34,7 +34,7 @@ export default function CreateUser(){
         role: '',
     })
     
-    function submit(e: any) {
+    function submit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         post("/user-management")
     }

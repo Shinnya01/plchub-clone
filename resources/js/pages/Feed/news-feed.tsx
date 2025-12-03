@@ -38,7 +38,7 @@ export default function Newsfeed({posts}: {posts: Post[]}) {
         image: null as File | null
   })
 
-  const handlePost = (e: any) => {
+  const handlePost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     submit('/news-feed');
   }
