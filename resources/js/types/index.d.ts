@@ -52,3 +52,11 @@ export interface Post {
 
     user?: User
 }
+
+export interface GroupChat {
+    id: number
+    owner_id: number
+    name: string
+    group_code: string
+    privacy: string
+}

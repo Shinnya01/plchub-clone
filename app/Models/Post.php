@@ -22,7 +22,22 @@ class Post extends Model
     }
 
     protected $casts = [
-        'created_at' => 'datetime:Y-m-d g:i A', 
-        'updated_at' => 'datetime:Y-m-d g:i A',
-    ];
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
+
+    public function getCreatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)
+            ->timezone('Asia/Manila')
+            ->format('Y-m-d g:i A');
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)
+            ->timezone('Asia/Manila')
+            ->format('Y-m-d g:i A');
+    }
+
 }

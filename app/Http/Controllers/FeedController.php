@@ -32,7 +32,7 @@ class FeedController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'description' => 'nullable|string',
+            'description' => 'required|string',
             'image' => 'nullable|image|max:2048',
         ]);
 
@@ -71,7 +71,27 @@ class FeedController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
+        $request->validate([
+            'description' => 'required|string',
+            'image' => 'nullable|max:2048',
+        ]);
+
+        $post = Post::findOrFail($id);
+ 
+        if ($request->hasFile('image')) {
+            if ($post->image && \Storage::disk('public')->exists($post->image)) {
+                \Storage::disk('public')->delete($post->image);
+            }
+
+            $post->image = $request->file('image')->store('posts', 'public');
+        }
+
+        $post->description = $request->description;
+
+        $post->save();
+
+        return back()->with('success', 'Post updated successfully.');
     }
 
     /**
@@ -79,6 +99,9 @@ class FeedController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $post->delete();
+        
+        return back()->with('success','Post deleted successfully!');
     }
 }
