@@ -15,8 +15,13 @@ class GroupChatController extends Controller
      */
     public function index()
     {
-        $group_chats = GroupChat::all();
-        return Inertia::render('Chat/group-chat', compact('group_chats'));
+        $myGroups = GroupChat::where('owner_id', Auth::id())
+                            ->get();
+        $publicGroups = GroupChat::where('privacy', 'public')
+                            ->whereNot('owner_id', Auth::id())
+                            ->get();
+                            
+        return Inertia::render('Chat/group-chat', compact('myGroups', 'publicGroups'));
     }
 
     /**
