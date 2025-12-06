@@ -2,25 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 
-class Post extends Model
+class ChatMessage extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-        'user_id',
-        'description',
-        'image',
+        "user_id",
+        "group_chat_id",
+        "message",
     ];
 
-    public function user()
-    {
+    public function user(){
         return $this->belongsTo(User::class);
     }
 
+    public function GroupChat(){
+        return $this->belongsTo(GroupChat::class);
+    }
+    
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -39,5 +38,4 @@ class Post extends Model
             ->timezone('Asia/Manila')
             ->format('Y-m-d g:i A');
     }
-
 }

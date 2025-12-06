@@ -21,6 +21,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('user-management', UserController::class);
     Route::resource('news-feed', FeedController::class);
     Route::resource('group-chat', GroupChatController::class);
+    
+    Route::post('group-chat/send-message', [GroupChatController::class, 'sendMessage']);
+    Route::post('group-chat/group-request', [GroupChatController::class, 'groupRequest']);
+    Route::post('group-chat/join-group', [GroupChatController::class, 'joinGroup']);
+    Route::post('group-chat/leave-group', [GroupChatController::class, 'leaveGroup']);
+    Route::post('group-chat/accept-user', [GroupChatController::class, 'acceptUser']);
+    Route::post('group-chat/reject-user', [GroupChatController::class, 'rejectUser']);
 });
 
 require __DIR__.'/settings.php';

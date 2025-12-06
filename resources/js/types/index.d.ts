@@ -44,19 +44,47 @@ export interface User {
 }
 
 export interface Post {
-    id: number
-    user_id: number
-    description: string | null
-    created_at: string
-    image: string | null
+    id: number;
+    user_id: number;
+    description: string | null;
+    created_at: string;
+    image: string | null;
 
-    user?: User
+    user?: User;
 }
 
 export interface GroupChat {
-    id: number
-    owner_id: number
-    name: string
-    group_code: string
-    privacy: string
+    id: number;
+    owner_id: number;
+    name: string;
+    group_code: string;
+    privacy: 'public' | 'private';
+    group_photo?: string;
+    members?: GroupMember[];
+    messages?: ChatMessage[];
+    requests?: GroupRequest[];
+}
+
+export interface GroupMember {
+    id: number;
+    user_id: number;
+    group_chat_id: number;
+    role: string;
+    user?: User;
+}
+
+export interface ChatMessage {
+    id: number;
+    user_id: number;
+    message: string;
+    group_chat_id: number;
+    created_at: string;
+    user: User;
+}
+
+export interface GroupRequest {
+    id: number;
+    user_id: number;
+    group_chat_id: number;
+    user?: User;
 }

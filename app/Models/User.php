@@ -50,4 +50,8 @@ class User extends Authenticatable
             'two_factor_confirmed_at' => 'datetime',
         ];
     }
+    public function groupMessages()
+    {
+        return $this->hasMany(ChatMessage::class);
+    }
 }

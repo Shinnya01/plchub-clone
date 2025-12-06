@@ -18,14 +18,30 @@ class GroupChat extends Model
         return $this->belongsTo(User::class, "owner_id");
     }
 
+    public function members()
+    {
+        return $this->hasMany(GroupMember::class);
+    }
+
+    public function requests() {
+        return $this->hasMany(GroupRequest::class);
+    }
+
+    public function messages()
+    {
+       return $this->hasMany(ChatMessage::class);
+    }
+
+
     protected static function booted()
     {
         static::creating(function ($groupChat) {
             do {
                 $code = strtoupper(Str::random(10));
-            } while (self::where('code', $code)->exists());
+            } while (self::where('group_code', $code)->exists());
 
             $groupChat->group_code = $code;
         });
     }
+    
 }
