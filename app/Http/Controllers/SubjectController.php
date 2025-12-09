@@ -46,15 +46,15 @@ class SubjectController extends Controller
 
     public function joinSubject(Request $request){
 
-        $request->validate([
-            'subject_code' => 'required|exists:subjects,id',
+            $request->validate([
+            'subject_code' => 'required|exists:subjects,subject_code',
             ], [
                 'subject_code.exists' => 'Subject not found, please try again!',
             ]);
 
 
-            $subject = Subject::find($request->subject_code);
-        
+            $subject = Subject::where('subject_code',$request->subject_code)->first();
+            
             StudentSubject::create([
                 'user_id'=> Auth::id(),
                 'subject_id' => $subject->id,
