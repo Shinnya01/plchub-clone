@@ -88,3 +88,12 @@ export interface GroupRequest {
     group_chat_id: number;
     user?: User;
 }
+
+export interface Subject {
+    id: number;
+    name: string;
+    teacher_id: number;
+    subject_code: string;
+
+    teacher?: User;
+}

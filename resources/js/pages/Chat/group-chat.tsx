@@ -35,6 +35,7 @@ export default function GroupChats({
     const joinGroup = (group_chat_id: number) => {
         router.post('/group-chat/join-group', { group_chat_id });
     };
+
     const getInitials = useInitials();
 
     return (
@@ -52,6 +53,11 @@ export default function GroupChats({
                         </CardHeader>
                         <CardContent className="p-2">
                             <div className="space-y-4">
+                                {myGroups.length <= 0 && (
+                                    <div className="px-4 text-muted-foreground">
+                                        No groups yet.
+                                    </div>
+                                )}
                                 {myGroups.map((myGroup) => (
                                     <Card
                                         key={myGroup.id}
@@ -96,6 +102,11 @@ export default function GroupChats({
                         </CardHeader>
                         <CardContent className="p-2">
                             <div className="flex flex-col space-y-4">
+                                {publicGroups.length <= 0 && (
+                                    <div className="px-4 text-muted-foreground">
+                                        No public groups yet.
+                                    </div>
+                                )}
                                 {publicGroups.map((publicGroup) => (
                                     <Dialog key={publicGroup.id}>
                                         <DialogTrigger asChild>
