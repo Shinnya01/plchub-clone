@@ -122,7 +122,9 @@ export default function Subjects({ subjects }: { subjects: Subject[] }) {
                                 <CardDescription>
                                     Code: {subject.subject_code}
                                 </CardDescription>
-                                <CardDescription>999 Students</CardDescription>
+                                <CardDescription>
+                                    {subject.students_count} Students
+                                </CardDescription>
                             </CardHeader>
                         </Card>
                     ))}

@@ -96,4 +96,5 @@ export interface Subject {
     subject_code: string;
 
     teacher?: User;
+    students_count?: number;
 }

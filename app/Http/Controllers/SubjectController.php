@@ -15,7 +15,10 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        $subjects = Subject::where('teacher_id', Auth::id())->with(['teacher'])->get();
+        $subjects = Subject::where('teacher_id', Auth::id())
+                            ->with(['teacher'])
+                            ->withCount('students')
+                            ->get();
         return Inertia::render('Subject/subject', compact('subjects'));
     }
 
