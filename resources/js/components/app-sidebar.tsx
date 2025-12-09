@@ -15,6 +15,7 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import {
     BookOpen,
+    BookType,
     Folder,
     LayoutGrid,
     MessageSquare,
@@ -47,7 +48,7 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Subject',
         href: '/subject',
-        icon: MessageSquare,
+        icon: BookType,
     },
 ];
 

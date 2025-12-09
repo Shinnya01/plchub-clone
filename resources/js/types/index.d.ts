@@ -97,4 +97,14 @@ export interface Subject {
 
     teacher?: User;
     students_count?: number;
+    tasks_count?: number;
+}
+
+export interface Task {
+    id: number;
+    name: string;
+    description: string;
+    due_date: string;
+
+    subject?: Subject;
 }

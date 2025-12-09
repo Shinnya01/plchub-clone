@@ -16,7 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useInitials } from '@/hooks/use-initials';
 import AppLayout from '@/layouts/app-layout';
-import { GroupChat } from '@/types';
+import { BreadcrumbItem, GroupChat } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
 import { Dialog, DialogTrigger } from '@radix-ui/react-dialog';
 import { CreateJoinGroup } from './create-join-group';
@@ -38,8 +38,15 @@ export default function GroupChats({
 
     const getInitials = useInitials();
 
+    const breadcrumb: BreadcrumbItem[] = [
+        {
+            title: 'Group Chat',
+            href: '/group-chat',
+        },
+    ];
+
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={breadcrumb}>
             <Head title="Chat" />
             <div className="mx-auto flex w-5xl flex-1 flex-col gap-4 overflow-y-auto rounded-lg p-4">
                 <div className="flex justify-between">

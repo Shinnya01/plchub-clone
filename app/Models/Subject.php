@@ -31,4 +31,8 @@ class Subject extends Model
     public function students(){
         return $this->hasMany(StudentSubject::class);
     }
+
+    public function tasks(){
+        return $this->hasMany(StudentTask::class);
+    }
 }
