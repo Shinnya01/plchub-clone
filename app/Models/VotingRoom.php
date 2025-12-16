@@ -10,10 +10,17 @@ class VotingRoom extends Model
         "user_id",
         "name",
         "privacy",
+        "start_date",
+        "end_date",
     ];
 
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    protected $cast = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
     
 }

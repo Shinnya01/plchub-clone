@@ -129,6 +129,8 @@ export interface VotingRoom {
     id: number;
     name: string;
     privacy: string;
+    start_date: string;
+    end_date: string;
 
     user: User;
 }

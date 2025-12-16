@@ -34,12 +34,16 @@ class VotingController extends Controller
     {
         $request->validate([
             "name"=> "required|min:4",
-            "privacy" => "required|in:public,private"
+            "privacy" => "required|in:public,private",
+            'start_date' => 'required|date|after_or_equal:today',
+            'end_date'   => 'required|date|after_or_equal:start_date',
         ]);
 
         VotingRoom::create([
             "name"=> $request->name,
             "privacy"=> $request->privacy,
+            'start_date' => $request->start_date,
+            'end_date'   => $request->end_date,
             "user_id"=> Auth::id(),
         ]);
 
@@ -51,7 +55,8 @@ class VotingController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $votingRoom =  VotingRoom::findOrFail($id);
+        return Inertia::render("Voting/show-voting-room", compact("votingRoom"));
     }
 
     /**

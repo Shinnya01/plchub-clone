@@ -1,4 +1,6 @@
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import {
     Card,
     CardContent,
@@ -17,6 +19,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/components/ui/popover';
+import {
     Select,
     SelectContent,
     SelectGroup,
@@ -26,8 +33,9 @@ import {
 } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, VotingRoom } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
-import { useState } from 'react';
+import { Head, router, useForm } from '@inertiajs/react';
+import { ChevronDownIcon } from 'lucide-react';
+import React, { useState } from 'react';
 
 export default function VotingRooms({
     publicRooms,
@@ -37,16 +45,25 @@ export default function VotingRooms({
     privateRooms: VotingRoom[];
 }) {
     const [openCreate, setOpenCreate] = useState(false);
-
-    const { data, setData, post, processing, reset } = useForm({
+    const [openStartCalendar, setOpenStartCalendar] = React.useState(false);
+    const [openEndCalendar, setOpenEndCalendar] = React.useState(false);
+    const [startDate, setStartDate] = React.useState<Date | undefined>(
+        undefined,
+    );
+    const [endDate, setEndDate] = React.useState<Date | undefined>(undefined);
+    const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         privacy: '',
+        start_date: '',
+        end_date: '',
     });
 
     const createRoom = () => {
         post('/voting', {
             onSuccess: () => {
                 reset();
+                setStartDate(undefined);
+                setEndDate(undefined);
                 setOpenCreate(false);
             },
         });
@@ -81,6 +98,7 @@ export default function VotingRooms({
                                         setData('name', e.target.value)
                                     }
                                 />
+                                <InputError message={errors.name} />
                             </div>
                             <div className="space-y-4">
                                 <Label>Privacy</Label>
@@ -104,6 +122,103 @@ export default function VotingRooms({
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
+                                <InputError message={errors.privacy} />
+                            </div>
+                            <div className="space-y-4">
+                                <Label htmlFor="start_date">From</Label>
+                                <div className="flex items-center gap-2">
+                                    <Popover
+                                        open={openStartCalendar}
+                                        onOpenChange={setOpenStartCalendar}
+                                    >
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                id="start-date-picker"
+                                                className="justify-between font-normal"
+                                            >
+                                                {startDate
+                                                    ? startDate.toLocaleDateString()
+                                                    : 'Select date'}
+                                                <ChevronDownIcon />
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent
+                                            className="w-auto overflow-hidden p-0"
+                                            align="start"
+                                        >
+                                            <Calendar
+                                                mode="single"
+                                                selected={startDate}
+                                                captionLayout="dropdown"
+                                                onSelect={(selectedDate) => {
+                                                    setStartDate(selectedDate);
+
+                                                    if (selectedDate) {
+                                                        const formatted =
+                                                            selectedDate.toLocaleDateString(
+                                                                'en-CA',
+                                                            ); // YYYY-MM-DD
+                                                        setData(
+                                                            'start_date',
+                                                            formatted,
+                                                        );
+                                                    }
+
+                                                    setOpenStartCalendar(false);
+                                                }}
+                                            />
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
+                                <InputError message={errors.start_date} />
+                            </div>
+                            <div className="space-y-4">
+                                <Label htmlFor="end_date">To</Label>
+                                <div className="flex items-center gap-2">
+                                    <Popover
+                                        open={openEndCalendar}
+                                        onOpenChange={setOpenEndCalendar}
+                                    >
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                id="end-date-picker"
+                                                className="justify-between font-normal"
+                                            >
+                                                {endDate
+                                                    ? endDate.toLocaleDateString()
+                                                    : 'Select date'}
+                                                <ChevronDownIcon />
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent
+                                            className="w-auto overflow-hidden p-0"
+                                            align="start"
+                                        >
+                                            <Calendar
+                                                mode="single"
+                                                selected={endDate}
+                                                captionLayout="dropdown"
+                                                onSelect={(selectedDate) => {
+                                                    setEndDate(selectedDate);
+
+                                                    if (selectedDate) {
+                                                        setData(
+                                                            'end_date',
+                                                            selectedDate
+                                                                .toISOString()
+                                                                .slice(0, 10),
+                                                        );
+                                                    }
+
+                                                    setOpenEndCalendar(false);
+                                                }}
+                                            />
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
+                                <InputError message={errors.end_date} />
                             </div>
                             <DialogFooter>
                                 <Button>Discard</Button>
@@ -123,9 +238,29 @@ export default function VotingRooms({
                                 {publicRooms.map((room) => (
                                     <Card>
                                         <CardHeader>
-                                            <CardTitle>{room.name}</CardTitle>
+                                            <div className="flex items-center justify-between">
+                                                <CardTitle>
+                                                    {room.name}
+                                                </CardTitle>
+                                                <Button
+                                                    size="sm"
+                                                    onClick={() =>
+                                                        router.visit(
+                                                            `/voting/${room.id}`,
+                                                        )
+                                                    }
+                                                >
+                                                    Enter Room
+                                                </Button>
+                                            </div>
+                                            <div className="flex items-center justify-between">
+                                                <CardDescription>
+                                                    Creator: {room.user.name}
+                                                </CardDescription>
+                                            </div>
                                             <CardDescription>
-                                                creator: {room.user.name}
+                                                Start: {room.start_date} -{' '}
+                                                {room.end_date}
                                             </CardDescription>
                                         </CardHeader>
                                     </Card>
