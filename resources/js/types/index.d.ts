@@ -124,3 +124,11 @@ export interface Comment {
 
     user?: User;
 }
+
+export interface VotingRoom {
+    id: number;
+    name: string;
+    privacy: string;
+
+    user: User;
+}

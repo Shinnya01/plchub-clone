@@ -21,6 +21,10 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function likes(){
+        return $this->hasMany(FeedLike::class);
+    }
+
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

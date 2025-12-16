@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VotingController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\GroupChatController;
 use App\Http\Controllers\StudentTaskController;
@@ -26,6 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('group-chat', GroupChatController::class);
     Route::resource('subject', SubjectController::class);
     Route::resource('task', StudentTaskController::class);
+    Route::resource('voting', VotingController::class);
     
     Route::post('group-chat/send-message', [GroupChatController::class, 'sendMessage']);
     Route::post('group-chat/group-request', [GroupChatController::class, 'groupRequest']);

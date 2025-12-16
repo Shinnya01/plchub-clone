@@ -41,6 +41,7 @@ import {
     MessageSquare,
     Newspaper,
     Search,
+    Vote,
 } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
@@ -65,6 +66,11 @@ const mainNavItems: NavItem[] = [
         title: 'Subject',
         href: '/subject',
         icon: BookType,
+    },
+    {
+        title: 'Voting',
+        href: '/voting',
+        icon: Vote,
     },
 ];
 
