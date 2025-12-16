@@ -107,4 +107,20 @@ export interface Task {
     due_date: string;
 
     subject?: Subject;
+    comment?: Comment[];
+}
+
+export interface Crud {
+    id: number;
+    name: string;
+    description: string;
+}
+
+export interface Comment {
+    id: number;
+    comment: string;
+    user_id: number;
+    student_task_id: number;
+
+    user?: User;
 }

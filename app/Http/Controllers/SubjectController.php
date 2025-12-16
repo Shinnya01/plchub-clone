@@ -19,7 +19,12 @@ class SubjectController extends Controller
                             ->with(['teacher'])
                             ->withCount(['students', 'tasks'])
                             ->get();
-        return Inertia::render('Subject/subject', compact('subjects'));
+
+        $studentSubjects = Subject::whereHas('students', function ($q) {
+            $q->where('user_id', Auth::id());
+        })->get();
+        
+        return Inertia::render('Subject/subject', compact('subjects', 'studentSubjects'));
     }
 
     /**

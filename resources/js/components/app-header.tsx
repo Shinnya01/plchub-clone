@@ -32,7 +32,16 @@ import { cn, isSameUrl, resolveUrl } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
+import {
+    BookOpen,
+    BookType,
+    Folder,
+    LayoutGrid,
+    Menu,
+    MessageSquare,
+    Newspaper,
+    Search,
+} from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 
@@ -41,6 +50,21 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+    {
+        title: 'News Feed',
+        href: '/news-feed',
+        icon: Newspaper,
+    },
+    {
+        title: 'Group Chat',
+        href: '/group-chat',
+        icon: MessageSquare,
+    },
+    {
+        title: 'Subject',
+        href: '/subject',
+        icon: BookType,
     },
 ];
 

@@ -20,7 +20,13 @@ import { SharedData, Subject } from '@/types';
 import { Head, router, useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function Subjects({ subjects }: { subjects: Subject[] }) {
+export default function Subjects({
+    subjects,
+    studentSubjects,
+}: {
+    subjects: Subject[];
+    studentSubjects: Subject[];
+}) {
     const { auth } = usePage<SharedData>().props;
     const [openCreate, setOpenCreate] = useState(false);
     const [openJoin, setOpenJoin] = useState(false);
@@ -126,27 +132,66 @@ export default function Subjects({ subjects }: { subjects: Subject[] }) {
                     </div>
                 </div>
                 <div className="grid grid-cols-4 gap-4">
-                    {subjects.map((subject) => (
-                        <Card
-                            key={subject.id}
-                            onClick={() =>
-                                router.visit(`task/student-task/${subject.id}`)
-                            }
-                        >
-                            <CardHeader>
-                                <div className="flex justify-between">
-                                    <CardTitle>{subject.name}</CardTitle>
-                                    <p>{subject.tasks_count} Tasks</p>
-                                </div>
-                                <CardDescription>
-                                    Code: {subject.subject_code}
-                                </CardDescription>
-                                <CardDescription>
-                                    {subject.students_count} Students
-                                </CardDescription>
-                            </CardHeader>
-                        </Card>
-                    ))}
+                    {auth.user.role !== 'student'
+                        ? subjects.map((subject) => (
+                              <Card key={subject.id}>
+                                  <CardHeader>
+                                      <div className="flex justify-between">
+                                          <CardTitle>{subject.name}</CardTitle>
+                                          <p>{subject.tasks_count} Tasks</p>
+                                      </div>
+                                      <CardDescription>
+                                          Code: {subject.subject_code}
+                                      </CardDescription>
+                                      <div className="flex items-center justify-between">
+                                          <CardDescription>
+                                              {subject.students_count} Students
+                                          </CardDescription>
+                                          <Button
+                                              onClick={() =>
+                                                  router.visit(
+                                                      `task/student-task/${subject.id}`,
+                                                  )
+                                              }
+                                          >
+                                              Enter Class
+                                          </Button>
+                                      </div>
+                                  </CardHeader>
+                              </Card>
+                          ))
+                        : studentSubjects.map((studentSubject) => (
+                              <Card key={studentSubject.id}>
+                                  <CardHeader>
+                                      <div className="flex justify-between">
+                                          <CardTitle>
+                                              {studentSubject.name}
+                                          </CardTitle>
+                                          <p>
+                                              {studentSubject.tasks_count} Tasks
+                                          </p>
+                                      </div>
+                                      <CardDescription>
+                                          Code: {studentSubject.subject_code}
+                                      </CardDescription>
+                                      <div className="flex items-center justify-between">
+                                          <CardDescription>
+                                              {studentSubject.students_count}{' '}
+                                              Students
+                                          </CardDescription>
+                                          <Button
+                                              onClick={() =>
+                                                  router.visit(
+                                                      `task/student-task/${studentSubject.id}`,
+                                                  )
+                                              }
+                                          >
+                                              Enter Class
+                                          </Button>
+                                      </div>
+                                  </CardHeader>
+                              </Card>
+                          ))}
                 </div>
             </div>
         </AppLayout>

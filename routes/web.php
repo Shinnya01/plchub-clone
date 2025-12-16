@@ -3,6 +3,7 @@
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CrudController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SubjectController;
@@ -36,6 +37,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('subject/join-subject', [SubjectController::class, 'joinSubject']);
 
     Route::get("task/student-task/{subject_id}", [StudentTaskController::class, 'studentTasks']);    
+    Route::get("task/show-task/{task}/{user}", [StudentTaskController::class, 'showTask']);    
+    
+    Route::post("task/comment/{task_id}/{user_id}", [StudentTaskController::class, 'comment']);    
+
+
+
+
+
+
+
+
+
+    Route::resource('/crud', CrudController::class);
 });
 
 require __DIR__.'/settings.php';

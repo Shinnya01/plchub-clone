@@ -13,4 +13,8 @@ class StudentTask extends Model
     public function subject(){
         return $this->belongsTo(Subject::class);
     }
+
+    public function comment(){
+        return $this->hasMany(TaskComment::class);
+    }
 }

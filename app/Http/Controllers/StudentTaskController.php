@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TaskComment;
+use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Subject;
 use App\Models\StudentTask;
@@ -14,10 +16,12 @@ class StudentTaskController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Subject/Tasks/tasks');
+        return abort(401);
     }
 
     public function studentTasks($subject_id){
+        
+
         $subject = Subject::with('teacher')->findOrFail($subject_id);
         $tasks = StudentTask::where('subject_id', $subject_id)->get();
 
@@ -53,9 +57,30 @@ class StudentTaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(StudentTask $studentTask)
+    public function show(StudentTask $task)
     {
-        //
+        return Inertia::render('Subject/Tasks/show-task', compact('task'));
+    }
+
+    public function showTask(StudentTask $task,User $user){
+        
+        $task->load(['subject.teacher', 'comment', 'comment.user']);
+        return Inertia::render('Subject/Tasks/show-task', compact('task', 'user'));        
+    }
+
+    public function comment(Request $request){
+       
+        $request->validate([
+            'comment'=> 'required|min:1',
+        ]);
+
+        TaskComment::create([
+            'student_task_id' => $request->task_id,
+            'user_id' => $request->user_id,
+            'comment'=> $request->comment,
+        ]);
+
+        return back();
     }
 
     /**

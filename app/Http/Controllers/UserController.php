@@ -28,7 +28,7 @@ class UserController extends Controller
                 break;
             
             default:
-                dd('error getting user info');
+                abort(401);
                 break;
         }
         return Inertia::render('User/user-management', compact('users'));

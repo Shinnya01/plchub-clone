@@ -6,7 +6,7 @@ import {
 } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, SharedData, Subject, Task } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
 import { AdviserList } from './adviser-list';
 
 export default function Tasks({
@@ -43,8 +43,20 @@ export default function Tasks({
                     <AdviserList tasks={tasks} subject={subject} />
                 ) : (
                     <div className="grid grid-cols-4 gap-4">
+                        {tasks.length === 0 && (
+                            <p className="col-span-4 text-center">
+                                No tasks yet
+                            </p>
+                        )}
                         {tasks.map((task) => (
-                            <Card key={task.id}>
+                            <Card
+                                key={task.id}
+                                onClick={() =>
+                                    router.visit(
+                                        `/task/show-task/${task.id}/${auth.user.id}`,
+                                    )
+                                }
+                            >
                                 <CardHeader>
                                     <CardTitle>{task.name}</CardTitle>
                                     <CardDescription>
