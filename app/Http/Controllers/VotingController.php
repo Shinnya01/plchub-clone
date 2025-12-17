@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\VotingCandidates;
+use App\Models\VotingPosition;
 use Inertia\Inertia;
 use App\Models\VotingRoom;
 use Illuminate\Http\Request;
@@ -50,12 +52,43 @@ class VotingController extends Controller
         return back()->with("success","Room created successfully!");
     }
 
+    public function createPosition(Request $request){
+        $request->validate([
+            "name"=> "required|min:4|unique:voting_positions,name",
+        ]);
+
+        VotingPosition::create(([
+            "voting_room_id"=> $request->voting_room_id,
+            "name"=> $request->name,
+        ]));
+
+        return back()->with("success","Position added!");
+    }
+
+    public function createCandidate(Request $request, $position_id){
+        $position = VotingPosition::find($position_id);
+        // $room = VotingRoom::find($position->voting_room_id);
+        
+        $request->validate([
+            "name"=> 'required|min:4',
+            "description" => 'nullable|max:255',
+        ]);
+
+        VotingCandidates::create([
+            'voting_position_id'=> $position->voting_room_id,
+            'name'=> $request->name,    
+            'description'=> $request->description,
+        ]);
+
+        return back()->with('success','Candidate Added!');
+    }
+
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        $votingRoom =  VotingRoom::findOrFail($id);
+        $votingRoom =  VotingRoom::where('id',$id)->with(['user', 'positions', 'positions.candidates'])->first();
         return Inertia::render("Voting/show-voting-room", compact("votingRoom"));
     }
 

@@ -22,5 +22,10 @@ class VotingRoom extends Model
         'start_date' => 'datetime',
         'end_date' => 'datetime',
     ];
+
+    public function positions(){
+        return $this->hasMany(VotingPosition::class);
+    }
+    
     
 }

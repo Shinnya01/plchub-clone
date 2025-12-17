@@ -133,4 +133,20 @@ export interface VotingRoom {
     end_date: string;
 
     user: User;
+    positions?: Position[];
+    candidates?: Candidate[];
+}
+
+export interface Position {
+    id: number;
+    name: string;
+
+    candidates?: Candidate[];
+}
+
+export interface Candidate {
+    id: number;
+    name: string;
+    description: string;
+    image?: string;
 }

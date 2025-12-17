@@ -43,7 +43,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     Route::post("task/comment/{task_id}/{user_id}", [StudentTaskController::class, 'comment']);    
 
-
+    Route::post('voting/create-position', [VotingController::class, 'createPosition']);
+    Route::post('voting/create-candidate/{position_id}', [VotingController::class, 'createCandidate']);
 
 
 
